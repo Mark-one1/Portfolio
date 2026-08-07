@@ -5,12 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Narasimha Naidu | Cybersecurity Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <section class="portfolio-intro" id="portfolio-intro" aria-label="Portfolio introduction">
+        <canvas id="splash-cursor-canvas" class="portfolio-intro__fluid-canvas"></canvas>
+
         <div class="portfolio-intro__stage">
             <p class="portfolio-intro__eyebrow">Cybersecurity · VAPT · AI Security</p>
-            <h1 class="portfolio-intro__title" tabindex="0">Narasimha Naidu<i class="portfolio-intro__stars" aria-hidden="true"></i></h1>
+            
+            <!-- TITLE CONTAINER FOR FOLDTEXT -->
+            <h1 class="portfolio-intro__title" id="fold-text-title" tabindex="0">Narasimha Naidu</h1>
+
             <p class="portfolio-intro__subtitle">Portfolio</p>
             <button class="portfolio-intro__button" type="button" data-enter-portfolio>
                 <span class="portfolio-intro__spark" style="--i:0;top:-10px;left:12%" aria-hidden="true"></span>
@@ -27,6 +35,7 @@
         <div class="portfolio-intro__cursor" aria-hidden="true"></div>
         <div class="portfolio-intro__cursor-ring" aria-hidden="true"></div>
     </section>
+
     <main>
         <aside class="sidebar " data-sidebar>
             <div class="sidebar-info">
@@ -35,7 +44,7 @@
                 </figure>
 
                 <div class="info-content">
-                    <h1 class="name" title="Narasimha Naidu">Narasimha Naidu</h1>
+                    <h1 class="name" title="Narasimha Naidu">B.R.Narasimha Naidu</h1>
                     <p class="title">Cybersecurity Enthusiast</p>
                 </div>
 
@@ -81,7 +90,7 @@
                         <div class="contact-info">
                             <p class="contact-title">Location</p>
 
-                            <address>Bapatla, Andhra Pradesh, India</address>
+                            <a href="https://maps.app.goo.gl/dfqJXhnC7D1P87RG6" class="contact-link" target="_blank" rel="noopener noreferrer">Bapatla, Andhra Pradesh, India</a>
                         </div>
                     </li>
                 </ul>
@@ -100,6 +109,7 @@
                     <li class="navbar-item"><button class="navbar-link active" data-nav-link>About</button></li>
                     <li class="navbar-item"><button class="navbar-link" data-nav-link>Resume</button></li>
                     <li class="navbar-item"><button class="navbar-link" data-nav-link>Portfolio</button></li>
+                    <li class="navbar-item"><button class="navbar-link" data-nav-link>Certificates</button></li>
                     <li class="navbar-item"><button class="navbar-link" data-nav-link>Contact</button></li>
                 </ul>
             </nav>
@@ -288,6 +298,38 @@
                     <h2 class="h2 article-title">Resume</h2>
                 </header>
 
+                <!-- RESUME PREVIEW & DOWNLOAD CONTROLS -->
+                <section class="resume-download-bar">
+                    <div class="resume-download-bar__info">
+                        <ion-icon name="document-text-outline" class="resume-download-bar__icon"></ion-icon>
+                        <span>Curriculum Vitae</span>
+                    </div>
+                    <div class="resume-download-bar__actions">
+                        <button type="button" class="resume-btn resume-btn--preview" id="preview-resume-btn">
+                            <ion-icon name="eye-outline"></ion-icon>
+                            <span>Preview</span>
+                        </button>
+                        <div class="resume-dropdown">
+                            <button type="button" class="resume-btn resume-btn--download">
+                                <ion-icon name="download-outline"></ion-icon>
+                                <span>Download</span>
+                                <ion-icon name="chevron-down-outline"></ion-icon>
+                            </button>
+                            <div class="resume-dropdown__menu">
+                                <a href="Resume.pdf" download="Resume.pdf" class="resume-dropdown__item">
+                                    <ion-icon name="document-outline"></ion-icon> PDF Format (.pdf)
+                                </a>
+                                <a href="Resume.docx" download="Resume.docx" class="resume-dropdown__item">
+                                    <ion-icon name="logo-wordpress"></ion-icon> Word Format (.docx)
+                                </a>
+                                <button type="button" class="resume-dropdown__item" id="download-json-resume">
+                                    <ion-icon name="code-download-outline"></ion-icon> JSON Format (.json)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="timeline">
                     <div class="title-wrapper">
                         <div class="icon-box"><ion-icon name="book-outline"></ion-icon></div>
@@ -299,7 +341,7 @@
                         <li class="timeline-item">
                             <h4 class="h4 timeline-item-title">Bapatla Engineering College</h4>
                             <span>Aug 2023 — Apr 2027</span>
-                            <p class="timeline-text">B.Tech in Computer Science &amp; Engineering. Relevant coursework includes Operating Systems, Computer Networks, and Database Systems. Active in security-focused technical clubs with hands-on VAPT practice.</p>
+                            <p class="timeline-text">B.Tech in Computer Science &amp; Engineering with Cybersecurity. Relevant coursework includes Operating Systems, Computer Networks, Database Systems, and cybersecurity fundamentals. Active in security-focused technical clubs with hands-on VAPT practice.</p>
                         </li>
                     </ol>
                 </section>
@@ -540,6 +582,54 @@
                 </section>
             </article>
 
+            <article class="certificates border-glow-card" data-page="certificates">
+                <header>
+                    <h2 class="h2 article-title">Certificates</h2>
+                </header>
+
+                <section class="certificates-intro">
+                    <p>Professional learning credentials in cybersecurity, security testing, technical workshops, and online assessments.</p>
+                </section>
+
+                <ul class="certificate-list">
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>Cybersecurity Certificate</h3><p>Certificate documenting cybersecurity-focused learning and completion.</p></div>
+                        <a href="assets/certificates/cybersecurity-certificate.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="ribbon-outline"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>IBM SkillsBuild Completion</h3><p>Completion certificate for SkillsBuild learning and professional development.</p></div>
+                        <a href="assets/certificates/skillsbuild-certificate.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="calculator-outline"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>Mathematics Workshop</h3><p>Certificate of participation in a mathematics workshop.</p></div>
+                        <a href="assets/certificates/math-workshop.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="logo-google"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>Google Quiz</h3><p>Certificate awarded for completing a Google quiz assessment.</p></div>
+                        <a href="assets/certificates/google-quiz.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="business-outline"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>Cybersecurity for Businesses</h3><p>CodeRed course completion: Cybersecurity for Businesses – The Fundamental Edition.</p></div>
+                        <a href="assets/certificates/codered-cybersecurity-business.png" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="bug-outline"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>Android Bug Bounty Hunting</h3><p>CodeRed course completion: Hunt Like a Rat.</p></div>
+                        <a href="assets/certificates/codered-android-bug-bounty.png" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                    <li class="certificate-card">
+                        <div class="certificate-card__icon"><ion-icon name="code-slash-outline"></ion-icon></div>
+                        <div class="certificate-card__content"><h3>SQL Injection Attacks</h3><p>CodeRed course completion covering SQL injection attack techniques.</p></div>
+                        <a href="assets/certificates/codered-sql-injection.png" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                    </li>
+                </ul>
+            </article>
+
             <article class="blog " data-page="blog" hidden>
                 <header>
                     <h2 class="h2 article-title">Blog</h2>
@@ -665,15 +755,15 @@
                 </section>
             </article>
 
-            <article class="contact " data-page="contact">
+            <article class="contact border-glow-card" data-page="contact">
                 <header>
                     <h2 class="h2 article-title">Contact</h2>
                 </header>
 
                 <section class="mapbox" data-mapbox>
                     <figure>
-                        <iframe src="https://www.google.com/maps?q=Bapatla%2C%20Andhra%20Pradesh%2C%20India&amp;output=embed"
-                         width="400" height="300" loading="lazy"></iframe>
+                        <iframe src="https://maps.google.com/maps?q=Bapatla%2C%20Andhra%20Pradesh%2C%20India&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
+                         title="Map of Bapatla, Andhra Pradesh" width="400" height="300" loading="lazy"></iframe>
                     </figure>
                 </section>
 
@@ -700,6 +790,62 @@
         </div>
     </main>
 
+    <!-- RESUME PREVIEW MODAL -->
+    <div class="resume-modal" id="resume-preview-modal">
+        <div class="resume-modal__overlay" id="resume-modal-overlay"></div>
+        <div class="resume-modal__content">
+            <div class="resume-modal__header">
+                <h3>Resume Preview</h3>
+                <button type="button" class="resume-modal__close" id="close-resume-modal">
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+            </div>
+            <div class="resume-modal__body">
+                <pre class="resume-text-view" id="resume-text-content">
+B. R. NARASIMHA NAIDU
+Cybersecurity Enthusiast | VAPT & AI-Driven Security | VIBE - CODING
+Bapatla, Andhra Pradesh, India | narasimhanaidu2728@gmail.com | +91 91777 87729 | github.com/Narasimha917
+
+EDUCATION
+B.Tech in Computer Science & Engineering | Aug 2023 – April 2027
+BAPATLA ENGINEERING COLLEGE — Bapatla, Andhra Pradesh
+• Fourth-year student with a focus on cybersecurity and systems security
+• Relevant coursework: Operating Systems, Computer Networks, Database Systems
+• Active member of security-focused technical clubs
+• Hands-on practicals and gaining experience in VAPT
+
+EXPERIENCE
+Cybersecurity Intern | May 2026 – Present
+SynthoQuest Pvt. Ltd — Remote
+• Conducted VAPT training and produced security tooling documentation
+• Produced technical documentation for 8 security tools (CloudBrute, GitDorker, TruffleHog, EyeWitness, Subjack, LinkFinder, Katana)
+• Practiced exploitation fundamentals on Metasploitable 2 and vsftpd 2.3.4 backdoor using Meterpreter
+• Developed a 28-slide VAPT fundamentals presentation covering reconnaissance, scanning, exploitation, and reporting
+
+PROJECTS
+• Portfolio Business Card: Personal & portfolio card displaying complete profile (https://vcard-git-main-narasimha917s-projects.vercel.app)
+• AI-Driven Malware Sandbox Analyzer: Portable malware sandbox to analyze files and detect malware using Python, FastAPI & ML threat scores
+• AI-Powered Phishing Annihilator: AI Phishing analyzer for domains, emails, text, images with real-time threat score calculation
+
+SKILLS
+• Languages: Python, HTML, CSS, JavaScript
+• Security Tools: Metasploit, Nmap, Burp Suite, CloudBrute, GitDorker, TruffleHog, EyeWitness, Subjack, LinkFinder, Katana, OWASP Juice Shop
+• Platforms & Networking: Linux (Kali), Parrot OS, Windows, Cisco Packet Tracer
+• AI/ML & Automation: Local-AI Agent workflow, LLM orchestration, NVIDIA NIM API, RAG pipelines, Shannon entropy analysis
+• Security Concepts: VAPT fundamentals, OWASP Top 10, network security, vulnerability scanning
+• Soft Skills: Communication, Time management
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP Libraries for FoldText Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="./SplashCursor.js"></script>
+    <script src="./FoldText.js"></script>
     <script src="./script.js"></script>
+</body>
+</html>
