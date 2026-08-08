@@ -1186,6 +1186,58 @@ article.border-glow-card.active {
     height: 100%;
     border: none;
     filter: grayscale(1) invert(92%) contrast(90%) hue-rotate(180deg);
+    position: relative;
+    z-index: 1;
+}
+
+.mapbox-skeleton {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(100deg, var(--eerie-black1) 30%, var(--eerie-black2) 50%, var(--eerie-black1) 70%);
+    background-size: 200% 100%;
+    animation: mapboxShimmer 1.4s ease-in-out infinite;
+    opacity: 1;
+    transition: opacity .3s ease;
+}
+
+.mapbox-skeleton.is-loaded { opacity: 0; pointer-events: none; }
+
+.mapbox-link {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(15, 15, 18, .92);
+    color: var(--white2);
+    font-size: var(--fs7);
+    font-weight: var(--fw600);
+    box-shadow: var(--shadow2);
+    border: 1px solid rgba(255, 255, 255, .06);
+    transition: var(--transition1);
+}
+
+.mapbox-link ion-icon { font-size: 16px; color: rgba(255, 255, 255, .7); }
+
+.mapbox-link:hover {
+    background: rgba(15, 15, 18, 1);
+    color: var(--orange-yellow-crayola);
+}
+
+.mapbox-link:hover ion-icon { color: var(--orange-yellow-crayola); }
+
+@keyframes mapboxShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mapbox-skeleton { animation: none; }
 }
 
 .contact-form { margin-bottom: 10px; }
