@@ -163,6 +163,21 @@ if (form && window.location.protocol === 'file:') {
 const navigationLinks = document.querySelectorAll('[data-nav-link]');
 const pages = document.querySelectorAll('[data-page]');
 
+// The contact map now loads immediately (OpenStreetMap embeds are light
+// and reliable), with a shimmering skeleton shown until the iframe fires
+// its 'load' event so the section never appears as an empty blank box.
+const mapboxSection = document.querySelector('[data-mapbox]');
+const mapboxSkeleton = document.querySelector('[data-mapbox-skeleton]');
+const mapboxIframe = mapboxSection ? mapboxSection.querySelector('iframe') : null;
+
+if (mapboxIframe && mapboxSkeleton) {
+    mapboxIframe.addEventListener('load', function () {
+        mapboxSkeleton.classList.add('is-loaded');
+    });
+    // Fallback in case the load event is missed (e.g. cached iframe).
+    window.setTimeout(function () { mapboxSkeleton.classList.add('is-loaded'); }, 4000);
+}
+
 for(let i = 0; i < navigationLinks.length; i++) {
     navigationLinks[i].addEventListener('click', function() {
         
@@ -195,7 +210,7 @@ function playKeyClickSound() {
         const gain = audioCtx.createGain();
 
         // Mechanical key click frequency burst
-        const freq = 600 + Math.random() * 400;
+        const freq = 6100 + Math.random() * 4100;
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
@@ -560,8 +575,38 @@ window.addEventListener('resize', function () {
     if (portfolioChat.classList.contains('is-open')) positionPortfolioChat();
 });
 
+// Clicking anywhere outside the chat panel closes it without clearing
+// the conversation — messages stay in the DOM until the page is
+// refreshed, and reopening the assistant restores the same history.
+document.addEventListener('pointerdown', function (event) {
+    if (!portfolioChat.classList.contains('is-open')) return;
+    if (portfolioChat.contains(event.target)) return;
+    if (avatarBox && avatarBox.contains(event.target)) return;
+
+    portfolioChat.classList.remove('is-open');
+    const trigger = avatarBox ? avatarBox.querySelector('.portfolio-assistant-trigger') : null;
+    if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('aria-label', 'Open portfolio assistant');
+    }
+});
+
 function speakPortfolioGreeting() {
     showAvatarGreeting();
+
+    if ('speechSynthesis' in window) {
+        try {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(`${getTimeGreeting()} Can I assist you?`);
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
+        } catch (e) {
+            // Speech synthesis unsupported or blocked — text bubble still shows.
+        }
+    }
+
     window.setTimeout(function () {
         avatarGreeting.textContent = 'Can I assist you?';
         showAvatarGreeting();
@@ -767,9 +812,50 @@ const classifyPortfolioQuestion = function (question) {
     return bestScore > 0 ? bestIntent : null;
 };
 
+// Knowledge-base fallback: when no scripted intent matches, search the
+// resume text itself line-by-line for the best keyword overlap so the
+// assistant can still answer specific, open-ended questions ("when did
+// he join SynthoQuest", "what is RAG pipelines", "does he know Nmap")
+// instead of only handling the fixed intent list above.
+const STOP_WORDS = new Set(['the', 'a', 'an', 'is', 'are', 'was', 'were', 'do', 'does', 'did', 'his', 'him', 'he', 'what', 'when', 'where', 'who', 'how', 'about', 'tell', 'me', 'i', 'to', 'of', 'in', 'on', 'for', 'and', 'or', 'you', 'your', 'can', 'has', 'have', 'with']);
+
+const resumeFacts = fullResumeText
+    .split('\n')
+    .map(function (line) { return line.replace(/^[•\s]+/, '').trim(); })
+    .filter(function (line) { return line.length > 8 && !/^[A-Z\s&]+$/.test(line); });
+
+const searchResumeFacts = function (question) {
+    const tokens = question.toLowerCase().match(/[a-z0-9.+#]+/g) || [];
+    const keywords = tokens.filter(function (t) { return t.length > 2 && !STOP_WORDS.has(t); });
+    if (!keywords.length) return null;
+
+    let best = null;
+    let bestHits = 0;
+    resumeFacts.forEach(function (fact) {
+        const lowerFact = fact.toLowerCase();
+        let hits = 0;
+        keywords.forEach(function (word) { if (lowerFact.indexOf(word) !== -1) hits++; });
+        if (hits > bestHits) {
+            bestHits = hits;
+            best = fact;
+        }
+    });
+
+    return bestHits > 0 ? best : null;
+};
+
 const getPortfolioAnswer = function (question) {
     const intent = classifyPortfolioQuestion(question);
     if (intent) return intent.respond();
+
+    const fact = searchResumeFacts(question);
+    if (fact) {
+        return {
+            text: fact,
+            suggestions: ['Show his skills', 'Show his projects', 'How do I contact him?']
+        };
+    }
+
     return {
         text: 'I didn’t quite catch that. I can help with Narasimha’s skills, projects, education, certificates, resume, or contact details — what would you like to know?',
         suggestions: ['Show his skills', 'Show his projects', 'How do I contact him?']
